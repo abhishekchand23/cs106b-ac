@@ -1,20 +1,21 @@
 Q1:
-
-
-
+finish = 'C'
+numDisks = 5
+start = 'A'
+temp = 'C'
 
 Q2:
-
-
+TowersOfHanoiGUI.cpp
+abracadabra is the function
 
 
 Q3:
-
+31
 
 
 
 Q4:
-
+15
 
 
 

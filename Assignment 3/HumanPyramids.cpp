@@ -1,15 +1,39 @@
 #include "HumanPyramids.h"
 #include "error.h"
+#include "grid.h"
+
 using namespace std;
 
 /* TODO: Refer to HumanPyramids.h for more information about what this function should do.
  * Then, delete this comment.
  */
+double weightOnBackOfRec(int row, int col, Grid<double>& gridWeightOnBackOf) {
+
+    if (col > row) error("Not in range of the pyramid");
+
+    if (row == 0 && col == 0) return 0;
+
+    else if (gridWeightOnBackOf[row][col] > -1){
+        return gridWeightOnBackOf[row][col];
+    }
+    else if (row == col) {
+        gridWeightOnBackOf[row][col] = 0.5 * weightOnBackOfRec(row -1, col - 1, gridWeightOnBackOf) + 80.0;
+        return gridWeightOnBackOf[row][col];
+    }
+    else if (col == 0) {
+        gridWeightOnBackOf[row][col] =  0.5 * weightOnBackOfRec(row -1, col, gridWeightOnBackOf) + 80.0;
+        return gridWeightOnBackOf[row][col];
+    }
+    else {
+        gridWeightOnBackOf[row][col] = 0.5 * (weightOnBackOfRec(row - 1, col -1, gridWeightOnBackOf) +
+                                              weightOnBackOfRec(row - 1, col, gridWeightOnBackOf)) + 160.0;
+        return gridWeightOnBackOf[row][col];
+    }
+}
+
 double weightOnBackOf(int row, int col) {
-    /* TODO: Delete the next few lines and implement this function. */
-    (void) row;
-    (void) col;
-    return 0;
+    Grid<double> sendGrid(row + 1, row + 1, -1.0);
+    return weightOnBackOfRec(row, col, sendGrid);
 }
 
 
@@ -23,16 +47,15 @@ double weightOnBackOf(int row, int col) {
  * very small and very large cases, etc.
  */
 
+PROVIDED_TEST("Milestone 1: Check Person A from the handout.") {
+    /* Person E is located at row 0, column 0. */
+    EXPECT_EQUAL(weightOnBackOf(0, 0), 0);
+}
 
-
-
-
-
-
-
-
-
-
+PROVIDED_TEST("Milestone 1: Check Person M from the handout.") {
+    /* Person E is located at row 4, column 2. */
+    EXPECT_EQUAL(weightOnBackOf(4, 2), 500);
+}
 
 
 
@@ -54,7 +77,6 @@ PROVIDED_TEST("Milestone 2: Memoization is implemented (should take under a seco
      * line immediately after this one - the one that starts with SHOW_ERROR - once
      * you have implemented memoization to test whether it works correctly.
      */
-    SHOW_ERROR("This test is configured to always fail until you delete this line from\n         HumanPyramids.cpp. Once you have implemented memoization and want\n         to check whether it works correctly, remove the indicated line.");
 
     /* Do not delete anything below this point. :-) */
 
